@@ -1,45 +1,45 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
-import Header from './components/Header'
-import Hero from './components/Hero.jsx'
-import CreateTrip from './components/Create-Trip/CreateTrip.jsx'
-import Footer from './components/Footer.jsx'
-import Error from './components/Error'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Header from "./components/Header";
+import Hero from "./components/Hero.jsx";
+import CreateTrip from "./components/Create-Trip/CreateTrip.jsx";
+import Footer from "./components/Footer.jsx";
+import Error from "./components/Error";
 
 const AppLayout = () => {
   return (
     <>
       <div className="font-gilroy font-medium text-lg">
-        <Header/>
-        <Outlet/>
-        <Footer/>
+        <Header />
+        <Outlet />
+        <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
 const appRoute = createBrowserRouter([
   {
-    path: '/',
-    element: <AppLayout/>,
-    errorElement: <Error/>,
+    path: "/",
+    element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       {
-        path: '/',
-        element: <Hero/>
+        path: "/",
+        element: <Hero />,
       },
       {
-        path: 'create-trip',
-        element: <CreateTrip/>
-      }
-    ]
-  }
-])
+        path: "create-trip",
+        element: <CreateTrip />,
+      },
+    ],
+  },
+]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={appRoute}/>
+    <RouterProvider router={appRoute} />
   </React.StrictMode>,
-)
+);
