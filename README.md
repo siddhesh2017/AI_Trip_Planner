@@ -23,4 +23,6 @@ npx shadcn-ui@latest add card
 <h3>Routing</h3>
 npm i react-router-dom
 
+<h3>Google places autocomplete installation</h3>
+npm install --save react-google-places-autocomplete
 
