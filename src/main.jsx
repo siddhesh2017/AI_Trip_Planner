@@ -7,6 +7,7 @@ import Hero from './components/Hero.jsx'
 import CreateTrip from './components/Create-Trip/CreateTrip.jsx'
 import Footer from './components/Footer.jsx'
 import Error from './components/Error'
+import { Toaster } from "@/components/ui/sonner"
 
 const AppLayout = () => {
   return (
@@ -40,6 +41,7 @@ const appRoute = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <Toaster />
     <RouterProvider router={appRoute}/>
   </React.StrictMode>,
 )
