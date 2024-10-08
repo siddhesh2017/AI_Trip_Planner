@@ -37,7 +37,9 @@ const appRoute = createBrowserRouter([
       }
     ]
   }
-])
+], {
+  basename: import.meta.env.BASE_URL, // this will use the base URL set in vite.config.js
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
