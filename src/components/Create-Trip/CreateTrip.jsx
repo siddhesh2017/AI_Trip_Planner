@@ -84,11 +84,11 @@ const CreateTrip = () => {
 
     return (
         <>
-            <div className="bg-white w-full h-auto py-10  px-40 pt-28">
-                <h2 className="text-3xl">Tell us your travel preferences</h2>
+            <div className="bg-gradient-to-br from-purple-100 via-orange-100 to-yellow-100 w-full h-auto py-10  px-40 pt-28">
+                <h2 className="text-4xl">Tell us your travel preferences</h2>
                 <p className="font-normal font-neutral-400 mt-1">Just provide some basic information and our trip planner will generate a customized itinerary based on your preferences.</p>
 
-                <div className="mt-10 flex flex-col gap-8">
+                <div className="mt-12 flex flex-col gap-8">
 
                     {/* GoogleAutoComplete Input Box */}
                     <div>
@@ -104,7 +104,7 @@ const CreateTrip = () => {
                     </div>
 
                     {/* noOfDays input box */}
-                    <div className='mt-5'>
+                    <div className='mt-3'>
                         <h2 className='text-xl mb-2'>How many days are you planning your trip?</h2>
                         <Input type="number"  onChange={(e) => {
                             (e.target.value > 10 || e.target.value < 1)? toast("We plan trip for maximum 10 days only!!") : handleFormData('noOfDays', e.target.value);
@@ -116,11 +116,11 @@ const CreateTrip = () => {
                         <h2 className='text-xl mb-3'>What is your budget?</h2>
                         <div className='grid grid-cols-3 gap-6 '>
                             {SelectBudgetOptions.map((item, index) => (
-                                <div className='bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-[1.5px] rounded-lg'> 
+                                <div className='bg-gradient-to-r from-purple-400 via-pink-300 to-red-300 p-[1.5px] rounded-lg'> 
                                     <div onClick={() => {
                                             handleFormData('budget', item.title);
                                         }} key={index+(Math.random()*10)} 
-                                        className={`p-4 cursor-pointer border border-transparent bg-clip-padding rounded-lg w-full bg-white     shadow-lg hover:shadow-xl ${(item.title == formData.budget) && "bg-gray-100"}`} >
+                                        className={`p-4 cursor-pointer border border-transparent bg-clip-padding rounded-lg w-full bg-white     shadow-lg hover:shadow-xl ${(item.title == formData.budget) && "bg-zinc-100"}`} >
                                             <h2 className='text-3xl'>{item.icon}</h2>
                                             <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
                                             <h2 className='font-normal text-sm'>{item.desc}</h2>
@@ -135,11 +135,11 @@ const CreateTrip = () => {
                         <h2 className='text-xl mb-3'>Who do you plan on travelling with on your next adventure?</h2>
                         <div className='grid grid-cols-3 gap-6 '>
                             {SelectTravelerList.map((item, index) => (
-                                <div className='bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-[2px] rounded-lg'> 
+                                <div className='bg-gradient-to-r from-purple-400 via-pink-300 to-red-300 p-[2px] rounded-lg'> 
                                     <div onClick={() => {
                                         handleFormData('noOfPeople', item.title);
                                     }}
-                                    key={index+(Math.random()*10)} className={`p-4 cursor-pointer border rounded-lg bg-white hover:shadow-lg ${(item.title == formData.noOfPeople) && "bg-gray-100"} `} >
+                                    key={index+(Math.random()*10)} className={`p-4 cursor-pointer border rounded-lg bg-white hover:shadow-lg ${(item.title == formData.noOfPeople) && "bg-zinc-100"} `} >
                                         <h2 className='text-3xl'>{item.icon}</h2>
                                         <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
                                         <h2 className='font-normal text-sm'>{item.desc}</h2>
