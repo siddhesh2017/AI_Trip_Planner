@@ -2,14 +2,27 @@ import { useState, useEffect } from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { Input } from "@/components/ui/input";
 import { SelectTravelerList, SelectBudgetOptions } from '../../constants/options';
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { AI_PROMPT } from '../../constants/options';
 import { chatSession } from '@/Gemini_AI_service/AIModel';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog";
+import { Button } from '../ui/button';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+
+  
 
 const CreateTrip = () => {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleFormData = (name, value) =>{
         setFormData({
@@ -17,7 +30,17 @@ const CreateTrip = () => {
             [name]: value
         })
     }
+    const login = useGoogleLogin({
+        onSuccess:(codeResp) => GetUserProfile(codeResp),
+        onError:(error) => console.log(error)
+    })
     const onGenerateTrip = async () =>{
+        const user = localStorage.getItem('user');
+        if(!user){
+            setOpenDialog(true);
+            return;
+        }
+
         console.log("Trip generated");
         if(!formData?.location || !formData.noOfDays || !formData.budget || !formData.noOfPeople){
             toast.error("Please fill all the fields!!");
@@ -33,6 +56,23 @@ const CreateTrip = () => {
         const result = await chatSession.sendMessage(Final_Prompt);
         console.log(result?.response?.text());
     }
+    const GetUserProfile = (tokenInfo) => {
+        try{
+            axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`,{
+                headers:{
+                    Authorization:`Bearer ${tokenInfo.access_token}`,
+                    Accept:'Application/json'
+                }
+            }).then((resp) => {
+                console.log(resp);
+                localStorage.setItem('user', JSON.stringify(resp?.data));
+                setOpenDialog(false);
+                onGenerateTrip();
+            })
+        } catch(e){
+            console.log(e);
+        }
+    }
     const clearFormData = () => {
         setFormData([]);
         console.log("Cleared data " + formData);
@@ -44,7 +84,7 @@ const CreateTrip = () => {
 
     return (
         <>
-            <div className="bg-slate-200 w-full h-auto py-10  px-40">
+            <div className="bg-white w-full h-auto py-10  px-40 pt-28">
                 <h2 className="text-3xl">Tell us your travel preferences</h2>
                 <p className="font-normal font-neutral-400 mt-1">Just provide some basic information and our trip planner will generate a customized itinerary based on your preferences.</p>
 
@@ -64,7 +104,7 @@ const CreateTrip = () => {
                     </div>
 
                     {/* noOfDays input box */}
-                    <div>
+                    <div className='mt-5'>
                         <h2 className='text-xl mb-2'>How many days are you planning your trip?</h2>
                         <Input type="number"  onChange={(e) => {
                             (e.target.value > 10 || e.target.value < 1)? toast("We plan trip for maximum 10 days only!!") : handleFormData('noOfDays', e.target.value);
@@ -72,33 +112,38 @@ const CreateTrip = () => {
                     </div>
 
                     {/* Budget input box */}
-                    <div className='mt-5'>
+                    <div className='mt-10'>
                         <h2 className='text-xl mb-3'>What is your budget?</h2>
                         <div className='grid grid-cols-3 gap-6 '>
                             {SelectBudgetOptions.map((item, index) => (
-                                <div onClick={() => {
-                                    handleFormData('budget', item.title);
-                                }} key={index+(Math.random()*10)} className={`p-4 cursor-pointer border rounded-lg bg-slate-50 hover:shadow-lg ${(item.title == formData.budget) && "border-slate-950"}`} >
-                                    <h2 className='text-3xl'>{item.icon}</h2>
-                                    <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
-                                    <h2 className='font-normal text-sm'>{item.desc}</h2>
+                                <div className='bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-[1.5px] rounded-lg'> 
+                                    <div onClick={() => {
+                                            handleFormData('budget', item.title);
+                                        }} key={index+(Math.random()*10)} 
+                                        className={`p-4 cursor-pointer border border-transparent bg-clip-padding rounded-lg w-full bg-white     shadow-lg hover:shadow-xl ${(item.title == formData.budget) && "bg-gray-100"}`} >
+                                            <h2 className='text-3xl'>{item.icon}</h2>
+                                            <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
+                                            <h2 className='font-normal text-sm'>{item.desc}</h2>
+                                        </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* NoOfPeople input box */}
-                    <div className='mt-5'>
+                    <div className='mt-10'>
                         <h2 className='text-xl mb-3'>Who do you plan on travelling with on your next adventure?</h2>
                         <div className='grid grid-cols-3 gap-6 '>
                             {SelectTravelerList.map((item, index) => (
-                                <div onClick={() => {
-                                    handleFormData('noOfPeople', item.title);
-                                }}
-                                 key={index+(Math.random()*10)} className={`p-4 cursor-pointer border rounded-lg bg-slate-50 hover:shadow-lg ${(item.title == formData.noOfPeople) && "border-slate-950"} `} >
-                                    <h2 className='text-3xl'>{item.icon}</h2>
-                                    <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
-                                    <h2 className='font-normal text-sm'>{item.desc}</h2>
+                                <div className='bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-[2px] rounded-lg'> 
+                                    <div onClick={() => {
+                                        handleFormData('noOfPeople', item.title);
+                                    }}
+                                    key={index+(Math.random()*10)} className={`p-4 cursor-pointer border rounded-lg bg-white hover:shadow-lg ${(item.title == formData.noOfPeople) && "bg-gray-100"} `} >
+                                        <h2 className='text-3xl'>{item.icon}</h2>
+                                        <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
+                                        <h2 className='font-normal text-sm'>{item.desc}</h2>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -166,6 +211,29 @@ const CreateTrip = () => {
                                     Generate Trip
                                 </button>
                             </div>
+
+                            <Dialog open={openDialog}>
+                                <DialogContent>
+                                    <DialogHeader>
+                                    <DialogTitle>
+                                        <div className='flex items-center gap-2'>
+                                            <img width="50" height="50" src="https://img.icons8.com/color/50/anghami.png" alt="anghami"/>
+                                            <h1 className='font-bold text-3xl'>WanderAI</h1>
+                                        </div>
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        <h2 className='font-bold text-xl mt-3 flex items-center gap-1'>Sign in with Google</h2>
+                                        <p>Sign in to the App with Google Authentication securely</p>
+
+                                        <Button className='w-full mt-5 flex items-center gap-2' onClick={login}>
+                                            <img width="25" height="25" src="https://img.icons8.com/fluency/48/google-logo.png" alt="google-logo"/>
+                                            Sign in with Google
+                                        </Button>
+                                    </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+
 
             </div>
         </>
