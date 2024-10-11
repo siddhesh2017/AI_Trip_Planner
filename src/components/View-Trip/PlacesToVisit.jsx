@@ -1,9 +1,11 @@
 import React from 'react'
 import PlaceInfoCard from './PlaceInfoCard';
 
+    
+
 const PlacesToVisit = ({trip}) => {
     const {id, tripData, userEmail, userInput} = trip;
-    console.log(tripData?.itinerary[1].plan[0]);
+
   return (
     <div>
         <h2 className='font-extrabold text-2xl'>Places to Visit</h2>
