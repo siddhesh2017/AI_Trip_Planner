@@ -52,3 +52,6 @@ export const SelectBudgetOptions = [
 
 export const AI_PROMPT =
   "Generate Travel Plan for Location: {location}, for {totalDays} Days for {traveler} with a moderate budget, give me Hotels options list with HotelName, Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and suggest, itinerary(array) with placeName, Place Details, Place Image Url, Geo Coordinates, ticket Pricing, best time to visit(single time range) and timetotravel each of the location for {totalDays} days with each day plan with all data in JSON format.";
+
+
+export const PHOTO_REF_URL = 'https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=900&maxWidthPx=900&key=' + import.meta.env.VITE_GOOGLE_PLACE_API_KEY;
