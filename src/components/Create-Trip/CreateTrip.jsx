@@ -18,6 +18,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { db } from '@/services/FireBaseConfig';
 import { doc, setDoc } from "firebase/firestore"; 
+import { useNavigate } from 'react-router-dom';
 
   
 
@@ -26,12 +27,14 @@ const CreateTrip = () => {
     const [formData, setFormData] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(false);
+    const navigateTo = useNavigate();
 
     const handleFormData = (name, value) =>{
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
         })
+        console.log(formData);
     }
     const login = useGoogleLogin({
         onSuccess:(codeResp) => GetUserProfile(codeResp),
@@ -44,18 +47,18 @@ const CreateTrip = () => {
             return;
         }
 
-        console.log("Trip generated");
+        // console.log("Trip generated");
         if(!formData?.location || !formData.noOfDays || !formData.budget || !formData.noOfPeople){
             toast.error("Please fill all the fields!!");
         }
         setLoading(true);
         const Final_Prompt = AI_PROMPT
-        .replace('{location}    ', formData?.location?.label)
+        .replace('{location}', formData?.location?.label)
         .replace('{totalDays}', formData?.noOfDays)
         .replace('{traveler}', formData?.noOfPeople)
         .replace('{budget}', formData?.budget)
         .replace('{totalDays}', formData?.noOfDays);
-        console.log(Final_Prompt);
+        // console.log(Final_Prompt);
         const result = await chatSession.sendMessage(Final_Prompt);
         console.log(result?.response?.text());
         // clearFormData();
@@ -72,7 +75,8 @@ const CreateTrip = () => {
             userEmail: user?.email
           });
           setLoading(false);
-          console.log("Trip saved successfully!!");
+          toast("Trip saved successfully!!");
+          navigateTo('/view-trip/'+docId);
     }
     const GetUserProfile = (tokenInfo) => {
         try{
@@ -93,17 +97,18 @@ const CreateTrip = () => {
                 onGenerateTrip();
             })
         } catch(e){
-            console.log(e);
+            console.error();
+            (e);
         }
     }
     const clearFormData = () => {
         setFormData([]);
-        console.log("Cleared data " + formData);
+        toast("Cleared data :)");
     }
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     console.log(formData);
+    // }, [formData]);
 
     return (
         <>
@@ -143,7 +148,7 @@ const CreateTrip = () => {
                                     <div onClick={() => {
                                             handleFormData('budget', item.title);
                                         }} key={index+(Math.random()*10)} 
-                                        className={`p-4 cursor-pointer border border-transparent bg-clip-padding rounded-lg w-full h-full bg-white     shadow-lg hover:shadow-xl ${(item.title == formData.budget) && "bg-zinc-100"}`} >
+                                        className={`p-4 cursor-pointer border border-transparent bg-clip-padding rounded-lg w-full h-full bg-white     shadow-lg hover:shadow-xl ${(item.title == formData.budget) && "bg-zinc-200"}`} >
                                             <h2 className='text-3xl'>{item.icon}</h2>
                                             <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
                                             <h2 className='font-normal text-sm'>{item.desc}</h2>
@@ -160,9 +165,9 @@ const CreateTrip = () => {
                             {SelectTravelerList.map((item, index) => (
                                 <div className='bg-gradient-to-r from-purple-400 via-pink-300 to-red-300 p-[2px] rounded-lg'> 
                                     <div onClick={() => {
-                                        handleFormData('noOfPeople', item.title);
+                                        handleFormData('noOfPeople', item.people);
                                     }}
-                                    key={index+(Math.random()*10)} className={`p-4 cursor-pointer w-full h-full border rounded-lg bg-white hover:shadow-lg ${(item.title == formData.noOfPeople) && "bg-zinc-100"} `} >
+                                    key={index+(Math.random()*10)} className={`p-4 cursor-pointer w-full h-full border rounded-lg bg-white hover:shadow-lg ${(item.people == formData.noOfPeople) && "bg-zinc-200"} `} >
                                         <h2 className='text-3xl'>{item.icon}</h2>
                                         <h2 className='mt-1 font-bold text-lg'>{item.title}</h2>
                                         <h2 className='font-normal text-sm'>{item.desc}</h2>
