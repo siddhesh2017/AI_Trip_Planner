@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? '/always-on-trip.vercel' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/AI_Trip_Planner/' : '/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
