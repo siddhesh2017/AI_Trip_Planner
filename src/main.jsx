@@ -10,6 +10,7 @@ import Error from './components/Error'
 import { Toaster } from "@/components/ui/sonner"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import ViewTrip from './components/View-Trip/ViewTrip'
+import MyTrips from './components/My-Trips/MyTrips.jsx' 
 
 const AppLayout = () => {
   return (
@@ -40,6 +41,10 @@ const appRoute = createBrowserRouter([
       {
         path: '/view-trip/:tripId',
         element: <ViewTrip/>
+      },
+      {
+        path: '/my-trips/',
+        element: <MyTrips/>
       }
     ]
   }

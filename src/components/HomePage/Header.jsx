@@ -20,14 +20,13 @@ import {
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { toast } from "sonner";
-import { useEffect } from 'react';
 
 
 const Header = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const navigateTo = useNavigation();
 
     const login = useGoogleLogin({
         onSuccess:(codeResp) => GetUserProfile(codeResp),
@@ -44,10 +43,6 @@ const Header = () => {
             }).then((resp) => {
                 toast("Logged in successfully!!");
                 localStorage.setItem('user', JSON.stringify(resp?.data));
-                // setTimeout(() => {
-                //     localStorage.removeItem('user');
-                //     toast('Session expired!');
-                // }, 1000000);
                 setOpenDialog(false);
                 window.location.reload();
             })
@@ -56,7 +51,6 @@ const Header = () => {
             (e);
         }
     }
-
    
     return (
         <>
@@ -69,7 +63,9 @@ const Header = () => {
                     {
                         user? 
                         <div className='flex gap-5 justify-center items-center'>
-                            <Button variant="outline" className='rounded-full' >Create Trip</Button>
+                            <a href="/my-trips">
+                                <Button variant="outline" className='rounded-full' >My Trips</Button>
+                            </a>
                             <Popover>
                                 <PopoverTrigger>
                                     <img className='bg-black rounded-full object-cover border-2 border-orange-500 hover:border-orange-700' width="47" height="47" src={USER} alt="user"/>
