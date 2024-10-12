@@ -9,8 +9,7 @@ import Footer from './components/HomePage/Footer.jsx'
 import Error from './components/Error'
 import { Toaster } from "@/components/ui/sonner"
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import ViewTrip from './components/View-Trip/ViewTrip'
-import MyTrips from './components/My-Trips/MyTrips.jsx' 
+
 
 const AppLayout = () => {
   return (
@@ -35,20 +34,14 @@ const appRoute = createBrowserRouter([
         element: <Hero/>
       },
       {
-        path: '/create-trip',
+        path: 'create-trip',
         element: <CreateTrip/>
-      },
-      {
-        path: '/view-trip/:tripId',
-        element: <ViewTrip/>
-      },
-      {
-        path: '/my-trips/',
-        element: <MyTrips/>
       }
     ]
   }
-])
+], {
+  basename: import.meta.env.BASE_URL, // this will use the base URL set in vite.config.js
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
