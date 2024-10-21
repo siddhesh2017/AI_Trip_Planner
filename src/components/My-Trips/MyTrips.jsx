@@ -13,7 +13,7 @@ const MyTrips = () => {
     
     const getUserTrip = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
-        console.log(user);
+        // console.log(user);
         if(!user){
             navigateTo('/');
             toast("Please Login");
@@ -21,15 +21,17 @@ const MyTrips = () => {
         setUserTrips([]);
         const q = query(collection(db, "AItrips"), where("userEmail", "==", user?.email));
         const querySnapshot = await getDocs(q);
+        // console.log(querySnapshot);
         querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
             setUserTrips(prevVal => [...prevVal, doc.data()]);
         });
     }
     
     useEffect(() => {
         getUserTrip();
-        
+        // console.log('useEffect is called');
+        // console.log(userTrips)
     }, []);
     
 
@@ -39,7 +41,7 @@ const MyTrips = () => {
             
             <div className='grid  grid-cols-2 lg:grid-cols-3 gap-5 mt-7'>
                 {userTrips.map((trips, index) => (
-                    <MyTripCards key={index+Math.random()*100} trips={trips}  />
+                    <MyTripCards key={index} trips={trips}  />
                 ))}
             </div>
         </div>

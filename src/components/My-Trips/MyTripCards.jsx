@@ -34,20 +34,22 @@ const MyTripCards = ({trips}) => {
     }
 
     return (
-        <div>
-            <Link to={"/view-trip/"+trips.id}>
-                {photoUrl ? <img className='rounded-xl mt-5 w-72 h-40' src={photoUrl} /> : <div className=' rounded-xl mt-5 w-72 h-40'> </div>}
+        <div className='  bg-gradient-to-r from-purple-400 via-pink-300 to-red-300 p-[2px] rounded-lg mt-2 hover:scale-105 transition-all cursor-pointer'>
+            <div className='bg-white h-full w-full rounded-lg py-3 px-3 '>
+                <Link to={"/view-trip/"+trips.id}>
+                    {photoUrl ? <img className='rounded-xl mt-1 w-72 h-40' src={photoUrl} /> : <div className=' rounded-xl mt-1 w-72 h-40'> </div>}
 
-                <div>
-                    <h2 className='font-bold text-lg'>{trips?.userInput?.location?.label}</h2>
-                    <h2 className='font-medium text-sm text-gray-500'>{`${userInput?.noOfDays} Days trip with ${userInput?.budget} Budget`}</h2>
+                    <div>  
+                        <h2 className='font-bold text-lg mt-4 '>{trips?.userInput?.location?.label}</h2>
+                        <h2 className='font-medium text-sm  text-gray-500'>{`${userInput?.noOfDays} Days trip with ${userInput?.budget} Budget`}</h2>
+                    </div>
+                </Link>
+                <div className='mt-4 flex justify-end'>
+                    <Button onClick={() => {
+                        deleteTrip(id)
+                        
+                    }} >Delete</Button>
                 </div>
-            </Link>
-            <div>
-                <Button onClick={() => {
-                    deleteTrip(id)
-                    
-                }} >Delete</Button>
             </div>
         </div>
     ) 
