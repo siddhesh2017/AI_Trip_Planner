@@ -43,14 +43,12 @@ const appRoute = createBrowserRouter([
         element: <ViewTrip/>
       },
       {
-        path: '/my-trips/',
+        path: '/my-trips',
         element: <MyTrips/>
       }
     ]
   }
-], {
-  basename: import.meta.env.BASE_URL, // this will use the base URL set in vite.config.js
-})
+])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
