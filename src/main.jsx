@@ -53,10 +53,8 @@ const appRoute = createBrowserRouter([
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
       <Toaster />
       <RouterProvider router={appRoute}/>
     </GoogleOAuthProvider>
-  </React.StrictMode>,
 )
